@@ -5,9 +5,17 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class CustomerService {
-  check() {
-    return this.http.get('http://localhost:8082/check');
+  getHotels() {
+    return this.http.get('http://localhost:8086/getHotels');
   }
+  check() {
+    return this.http.get('http://localhost:8086/check');
+  }
+
+  getCities() {
+    return this.http.get('http://localhost:8086/getCities');
+  }
+
 
   constructor(private http: HttpClient) { }
 }
