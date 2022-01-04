@@ -17,6 +17,8 @@ export class CustomerComponent implements OnInit {
 
   fromCity: string = '';
   toCity: string = '';
+  orderType: string= '';
+  distance: string = '';
 
   check()
   {

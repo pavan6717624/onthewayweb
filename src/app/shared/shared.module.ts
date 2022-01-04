@@ -27,6 +27,7 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import {FormsModule} from '@angular/forms';
+import { NzCardModule } from 'ng-zorro-antd/card';
 
 @NgModule({
   declarations: [],
@@ -39,6 +40,7 @@ import {FormsModule} from '@angular/forms';
     FormsModule,
     NzIconModule,
     NzSelectModule,
+    NzCardModule,
 
     NzMessageModule,
     NzAffixModule,

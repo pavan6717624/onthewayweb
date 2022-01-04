@@ -1,11 +1,23 @@
 <div nz-row>
     <div nz-col nzSpan="6" style='text-align: left'>&nbsp;</div>
+    <div nz-col nzSpan="6" style='text-align: left'>&nbsp;</div>
+    <div nz-col nzSpan="12" style='text-align: left'> &nbsp;</div>
+</div>
+<div nz-row>
+    <div nz-col nzSpan="6" style='text-align: left'>&nbsp;</div>
+    <div nz-col nzSpan="6" style='text-align: left'>&nbsp;</div>
+    <div nz-col nzSpan="12" style='text-align: left'> &nbsp;</div>
+</div>
+
+
+<div nz-row>
+    <div nz-col nzSpan="6" style='text-align: left'>&nbsp;</div>
     <div nz-col nzSpan="6" style='text-align: left'> From </div>
     <div nz-col nzSpan="12" style='text-align: left'>
 
 
-        <nz-select  [(ngModel)]="fromCity"  nzPlaceHolder="From City" style='width:80%'>
-            
+        <nz-select [(ngModel)]="fromCity" nzPlaceHolder="From City" style='width:80%'>
+
             <nz-option nzValue="Chennai" nzLabel="Chennai"></nz-option>
             <nz-option nzValue="Hyderabad" nzLabel="Hyderabad"></nz-option>
             <nz-option nzValue="Bangalore" nzLabel="Bangalore"></nz-option>
@@ -13,7 +25,7 @@
             <nz-option nzValue="Vizag" nzLabel="Vizag"></nz-option>
 
 
-          </nz-select>
+        </nz-select>
     </div>
 </div>
 <div nz-row>
@@ -28,8 +40,8 @@
     <div nz-col nzSpan="12" style='text-align: left'>
 
 
-        <nz-select  [(ngModel)]="toCity"  nzPlaceHolder="To City" style='width:80%'>
-            
+        <nz-select [(ngModel)]="toCity" nzPlaceHolder="To City" style='width:80%'>
+
             <nz-option nzValue="Chennai" nzLabel="Chennai"></nz-option>
             <nz-option nzValue="Hyderabad" nzLabel="Hyderabad"></nz-option>
             <nz-option nzValue="Bangalore" nzLabel="Bangalore"></nz-option>
@@ -37,9 +49,89 @@
             <nz-option nzValue="Vizag" nzLabel="Vizag"></nz-option>
 
 
-          </nz-select>
+        </nz-select>
     </div>
 </div>
+<div nz-row>
+    <div nz-col nzSpan="6" style='text-align: left'>&nbsp;</div>
+    <div nz-col nzSpan="6" style='text-align: left'>&nbsp;</div>
+    <div nz-col nzSpan="12" style='text-align: left'> &nbsp;</div>
+</div>
+
+
+<div nz-row>
+    <div nz-col nzSpan="6" style='text-align: left'>&nbsp;</div>
+    <div nz-col nzSpan="6" style='text-align: left'> Order Type </div>
+    <div nz-col nzSpan="12" style='text-align: left'>
+
+
+        <nz-select [(ngModel)]="orderType" nzPlaceHolder="Select Order Type" style='width:80%'>
+
+            <nz-option nzValue="takeaway" nzLabel="Take Away"></nz-option>
+            <nz-option nzValue="dinein" nzLabel="Dine In"></nz-option>
+            <nz-option nzValue="drivein" nzLabel="Drive In"></nz-option>
+
+
+        </nz-select>
+    </div>
+</div>
+<div nz-row>
+    <div nz-col nzSpan="6" style='text-align: left'>&nbsp;</div>
+    <div nz-col nzSpan="6" style='text-align: left'>&nbsp;</div>
+    <div nz-col nzSpan="12" style='text-align: left'> &nbsp;</div>
+</div>
+
+
+<div nz-row>
+    <div nz-col nzSpan="6" style='text-align: left'>&nbsp;</div>
+    <div nz-col nzSpan="6" style='text-align: left'> Distance </div>
+    <div nz-col nzSpan="12" style='text-align: left'>
+
+
+        <nz-select [(ngModel)]="distance" nzPlaceHolder="Select Distance" style='width:80%'>
+
+            <nz-option nzValue="0" nzLabel="0-50 KM"></nz-option>
+            <nz-option nzValue="1" nzLabel="51-100 KM"></nz-option>
+            <nz-option nzValue="2" nzLabel="101-200 KM"></nz-option>
+            <nz-option nzValue="3" nzLabel="201-300 KM"></nz-option>
+            <nz-option nzValue="4" nzLabel=">300 KM"></nz-option>
+
+
+        </nz-select>
+    </div>
+</div>
+<div nz-row>
+    <div nz-col nzSpan="6" style='text-align: left'>&nbsp;</div>
+    <div nz-col nzSpan="6" style='text-align: left'>&nbsp;</div>
+    <div nz-col nzSpan="12" style='text-align: left'> &nbsp;</div>
+</div>
+
+<div nz-row>
+    <div nz-col nzSpan="6" style='text-align: left'>&nbsp;</div>
+    <div nz-col nzSpan="18" style='text-align: left'>
+        <nz-card class='coupon' nzHoverable style="width:300px; height: auto;" [nzCover]="coverTemplate">
+            <nz-card-meta [nzTitle]="title" [nzDescription]="description"></nz-card-meta>
+        </nz-card>
+
+        <ng-template #coverTemplate>
+            <img alt="example"
+                style="width:297px; height: 295px;padding-left:3px;padding-top: 3px; border-radius: 15px;"
+                src="https://www.oberoihotels.com/-/media/oberoi-hotels/website-images/the-oberoi-new-delhi/dining/detail/omya---indian-restaurant-1.jpg?w=724&hash=639804eb8fb6e21e117d0a44e309aa1b" />
+        </ng-template>
+        <ng-template #title>
+            <b>Shri Anand Bhavan</b>
+        </ng-template>
+        <ng-template #description>
+            <b> <span class='highlight'>
+                    <nz-rate [ngModel]="1" [nzCount]="1" nzDisabled></nz-rate> 4.2
+                </span> &nbsp; &nbsp; &nbsp; 50 min &nbsp; &nbsp; &nbsp; 3.7 Km <br />
+                Chinese, Arabian, Fast Food<br />
+                Neeladri Main Road, Bengaluru
+            </b>
+        </ng-template>
+    </div>
+</div>
+
 <div nz-row>
     <div nz-col nzSpan="6" style='text-align: left'>&nbsp;</div>
     <div nz-col nzSpan="6" style='text-align: left'>&nbsp;</div>

@@ -51,6 +51,7 @@ import { NzAffixModule } from 'ng-zorro-antd/affix';
 
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { InterceptorService } from './interceptor.service';
+import { NzCardModule } from 'ng-zorro-antd/card';
 
 registerLocaleData(en);
 
@@ -105,7 +106,8 @@ const antDesignIcons = AllIcons as {
     NzImageModule,
     NzNotificationModule,
     NzTimePickerModule,
-    NzCheckboxModule
+    NzCheckboxModule,
+    NzCardModule
   ],
   providers: [LANG_PROVIDERS,{
     provide: HTTP_INTERCEPTORS, 
