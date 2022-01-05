@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { CustomerService } from '../customer.service';
 
@@ -12,8 +13,17 @@ export class Hotel
 {
 id: number = 0;
 name: string = '';
-onlineStatus: boolean = true;
+distance: number = 0.0;
 address: string = '';
+}
+
+export class Item
+{
+id: number = 0;
+name: string = '';
+price: number = 0.0;
+cookingTime: number = 0;
+availablity: boolean = true;
 }
 
 @Component({
@@ -23,12 +33,12 @@ address: string = '';
 })
 export class CustomerComponent implements OnInit {
 
-  constructor(private customerService: CustomerService, private msg: NzMessageService) { }
+  constructor(private router: Router, private customerService: CustomerService, private msg: NzMessageService) { }
 
   ngOnInit(): void {
     this.check();
     this.getCities();
-    this.getHotels();
+  
   }
 
 
@@ -39,6 +49,7 @@ export class CustomerComponent implements OnInit {
   cities: City[]=[];
   cities1: City[]=[];
   hotels: Hotel[]=[];
+  items: Item[]=[];
 
   check()
   {
@@ -58,31 +69,38 @@ export class CustomerComponent implements OnInit {
 
   getRestaurants()
   {
+ 
 
-    if(this.fromCity==null || (this.fromCity+"").length != 1)
+    if(this.fromCity==null || this.fromCity==='' || (this.fromCity+"").length != 1)
     this.msg.error("Please provide 'From City'");
 
-    if(this.toCity==null || (this.toCity+"").length != 1)
+    else if(this.toCity==null || this.toCity==='' || (this.toCity+"").length != 1)
     this.msg.error("Please provide 'To City'");
 
-    if(this.orderType==null || this.orderType === '' || this.orderType.length == 0) 
+    else if(this.orderType==null || this.orderType === '' || this.orderType.length == 0) 
     this.msg.error("Please provide 'Order Type'");
     
-    if(this.fromCity!=null && (this.fromCity+"").length == 1 && this.toCity!=null && (this.toCity+"").length == 1 && this.distance!= null && (this.distance+"").length > 0 && this.orderType!=null && (this.orderType+"").length > 0)
+    else if(this.fromCity!=null && (this.fromCity+"").length == 1 && this.toCity!=null && (this.toCity+"").length == 1 && this.orderType!=null && (this.orderType+"").length > 0)
    {
-     this.getHotels();
+     var formData = new FormData();
+     formData.set("fromCity",this.fromCity);
+     formData.set("toCity",this.toCity);
+     formData.set("orderType",this.orderType);
+     formData.set("distance",this.distance);
+     this.getHotels(formData);
    }
 
   }
 
-  getHotels()
+  getHotels(formData: FormData)
   {
-    this.customerService.getHotels().subscribe(
+    this.customerService.getHotels(formData).subscribe(
       (res : any) => {
        
         console.log(res);
         this.hotels=res;
-       
+        if(this.hotels!=null && this.hotels.length == 0)
+        this.msg.error('No Restaurants Found.')
        
       },
   
@@ -91,15 +109,48 @@ export class CustomerComponent implements OnInit {
       (err) => {   console.log(err); }
     );
   }
+
+  getItems(id:number)
+  {
+    // var formData = new FormData();
+    // formData.set("hotelId",id+"");
+
+    // this.customerService.getItems(formData).subscribe(
+    //   (res : any) => {
+       
+    //     console.log(res);
+    //     this.items=res;
+       
+       
+    //   },
+  
+    
+  
+    //   (err) => {   console.log(err); }
+    // );
+
+    this.router.navigate(['/customer/items'],{ state: { hotel: this.hotels[id] } }); 
+  }
   
 
-  provideCity2()
+  change1()
   {
     this.toCity = '';
     if(this.fromCity!=null && this.fromCity >= "0")
     this.cities1 = this.cities.filter( o => o.id != Number(this.fromCity));
+    this.hotels=[];
   }
-
+  change2()
+  {
+    this.hotels =[];
+  }
+  change3()
+  {
+    this.hotels =[];
+  }  change4()
+  {
+    this.hotels =[];
+  }
   getCities()
   {
     this.customerService.getCities().subscribe(

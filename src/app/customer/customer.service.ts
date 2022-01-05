@@ -5,8 +5,11 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class CustomerService {
-  getHotels() {
-    return this.http.get('http://localhost:8086/getHotels');
+  getItems(formData: FormData) {
+    return this.http.post('http://localhost:8086/getItems',formData);
+  }
+  getHotels(formData: FormData) {
+    return this.http.post('http://localhost:8086/getHotels',formData);
   }
   check() {
     return this.http.get('http://localhost:8086/check');

@@ -16,7 +16,7 @@
     <div nz-col nzSpan="15" style='text-align: left'>
 
 
-        <nz-select [(ngModel)]="fromCity" nzPlaceHolder="From City" style='width:80%' (ngModelChange)='provideCity2()'>
+        <nz-select [(ngModel)]="fromCity" nzPlaceHolder="From City" style='width:80%' (ngModelChange)='change1()'>
 
             <nz-option *ngFor="let city of cities" [nzValue]="city.id" [nzLabel]="city.name"></nz-option>
 
@@ -36,7 +36,7 @@
     <div nz-col nzSpan="15" style='text-align: left'>
 
 
-        <nz-select [(ngModel)]="toCity" nzPlaceHolder="To City" style='width:80%'>
+        <nz-select [(ngModel)]="toCity" nzPlaceHolder="To City" style='width:80%' (ngModelChange)='change2()'>
 
             <nz-option *ngFor="let city of cities1" [nzValue]="city.id" [nzLabel]="city.name"></nz-option>
 
@@ -57,11 +57,11 @@
     <div nz-col nzSpan="15" style='text-align: left'>
 
 
-        <nz-select [(ngModel)]="orderType" nzPlaceHolder="Select Order Type" style='width:80%'>
+        <nz-select [(ngModel)]="orderType" nzPlaceHolder="Select Order Type" style='width:80%' (ngModelChange)='change3()'>
 
-            <nz-option nzValue="takeaway" nzLabel="Take Away"></nz-option>
-            <nz-option nzValue="dinein" nzLabel="Dine In"></nz-option>
-            <nz-option nzValue="drivein" nzLabel="Drive In"></nz-option>
+            <nz-option nzValue="0" nzLabel="Take Away"></nz-option>
+            <nz-option nzValue="1" nzLabel="Dine In"></nz-option>
+            <nz-option nzValue="2" nzLabel="Drive In"></nz-option>
 
 
         </nz-select>
@@ -80,13 +80,14 @@
     <div nz-col nzSpan="15" style='text-align: left'>
 
 
-        <nz-select [(ngModel)]="distance" nzPlaceHolder="Select Distance" style='width:80%'>
+        <nz-select [(ngModel)]="distance" nzPlaceHolder="Select Distance" style='width:80%' (ngModelChange)='change4()'>
 
             <nz-option nzValue="0" nzLabel="0-50 KM"></nz-option>
             <nz-option nzValue="1" nzLabel="51-100 KM"></nz-option>
             <nz-option nzValue="2" nzLabel="101-200 KM"></nz-option>
             <nz-option nzValue="3" nzLabel="201-300 KM"></nz-option>
             <nz-option nzValue="4" nzLabel=">300 KM"></nz-option>
+            <nz-option nzValue="5" nzLabel="Any Distance"></nz-option>
 
 
         </nz-select>
@@ -119,11 +120,15 @@
 
     <div nz-col nzSpan="24" style='text-align: left'> &nbsp;</div>
 </div>
+
+
+
+<ng-container *ngIf="hotels && hotels.length > 0">
 <div nz-row *ngFor="let hotel of hotels">
     <div nz-col nzSpan="24">
         <div style='text-align: left' class='coupon' style="width:300px; height: auto;">
 
-            <img alt="example"
+            <img (click) = "getItems(hotel.id)" alt="example"
                 style="width:297px; height: 200px;padding-left:3px;padding-right:2px;padding-top: 3px; border-radius: 15px;"
                 src="https://www.oberoihotels.com/-/media/oberoi-hotels/website-images/the-oberoi-new-delhi/dining/detail/omya---indian-restaurant-1.jpg?w=724&hash=639804eb8fb6e21e117d0a44e309aa1b" />
 
@@ -134,7 +139,7 @@
 
                 <b> <span class='highlight'>
                         <nz-rate [ngModel]="1" [nzCount]="1" nzDisabled></nz-rate> 4.2
-                    </span> &nbsp; &nbsp; &nbsp; 50 min &nbsp; &nbsp; &nbsp; 3.7 Km <br />
+                    </span> &nbsp; &nbsp; &nbsp; 50 min &nbsp; &nbsp;{{hotel.distance}} Km <br />
                     Chinese, Arabian, Fast Food<br />
                     {{hotel.address}}
                 </b>
@@ -150,6 +155,7 @@
 
     </div>
 </div>
+</ng-container>
 <div nz-row>
     <div nz-col nzSpan="6" style='text-align: left'>&nbsp;</div>
     <div nz-col nzSpan="6" style='text-align: left'>&nbsp;</div>
