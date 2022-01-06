@@ -161,3 +161,74 @@
     <div nz-col nzSpan="6" style='text-align: left'>&nbsp;</div>
     <div nz-col nzSpan="12" style='text-align: left'> &nbsp;</div>
 </div>
+
+
+<nz-drawer
+[nzClosable]="false"
+[nzVisible]="visible"
+nzPlacement="right"
+[nzTitle]="itemTitle"
+(nzOnClose)="close()"
+[nzWidth]="screenWidth"
+>
+<ng-container *nzDrawerContent>
+ 
+<ng-container *ngIf="items && items.length > 0">
+
+    <div nz-row *ngFor="let item of items" style='text-align: left' class='coupon' style="width:300px; height: auto;">
+
+        <div nz-col nzSpan="16">
+            
+            <h3>{{item.name}}</h3>
+
+            <h5> {{item.price}}</h5>
+
+            <h5> Enjoy your favourite Dish. Add on Starter and beverage</h5>
+                
+
+                </div>
+                <div nz-col nzSpan="8" style='padding: 0px; position: relative;'>
+
+                    <img alt="example"
+                    style="width:100%; height: 80%;padding-left:3px;padding-right:2px;padding-top: 3px; border-radius: 15px;"
+                    src="https://www.oberoihotels.com/-/media/oberoi-hotels/website-images/the-oberoi-new-delhi/dining/detail/omya---indian-restaurant-1.jpg?w=724&hash=639804eb8fb6e21e117d0a44e309aa1b" />
+    <div style="position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);">Centered</div>
+                </div>
+                </div>
+         
+    
+
+
+</ng-container>
+
+</ng-container>
+</nz-drawer>
+
+
+<ng-template #itemTitle>
+    <div nz-row>
+
+        <div nz-col nzSpan="1" style='text-align: left'>
+    <i nz-icon nzType="arrow-left" nzTheme="outline"></i>
+   </div>
+   <div nz-col nzSpan="23" style='text-align: left'><b>{{selectedHotel.name}}</b><br/>
+     {{selectedHotel.address}} | {{selectedHotel.address}} KM | 50 min 
+     </div>
+     </div>
+     <hr/>
+     <nz-select nzPlaceHolder="Select Order Type" style='width:50%' (ngModelChange)='change3()'>
+
+        <nz-option nzValue="0" nzLabel="Take Away"></nz-option>
+        <nz-option nzValue="1" nzLabel="Dine In"></nz-option>
+        <nz-option nzValue="2" nzLabel="Drive In"></nz-option>
+
+
+    </nz-select>
+
+ 
+
+
+  </ng-template>

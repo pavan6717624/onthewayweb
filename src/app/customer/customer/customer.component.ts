@@ -23,7 +23,7 @@ id: number = 0;
 name: string = '';
 price: number = 0.0;
 cookingTime: number = 0;
-availablity: boolean = true;
+availability: boolean = true;
 }
 
 @Component({
@@ -35,9 +35,13 @@ export class CustomerComponent implements OnInit {
 
   constructor(private router: Router, private customerService: CustomerService, private msg: NzMessageService) { }
 
+  screenWidth:number=0;
+
+
   ngOnInit(): void {
     this.check();
     this.getCities();
+    this.screenWidth = window.innerWidth;
   
   }
 
@@ -50,6 +54,13 @@ export class CustomerComponent implements OnInit {
   cities1: City[]=[];
   hotels: Hotel[]=[];
   items: Item[]=[];
+  visible = false;
+  selectedHotel: Hotel = new Hotel();
+
+  close()
+  {
+    this.visible=false;
+  }
 
   check()
   {
@@ -112,24 +123,25 @@ export class CustomerComponent implements OnInit {
 
   getItems(id:number)
   {
-    // var formData = new FormData();
-    // formData.set("hotelId",id+"");
+    var formData = new FormData();
+    formData.set("hotelId",id+"");
 
-    // this.customerService.getItems(formData).subscribe(
-    //   (res : any) => {
+    this.customerService.getItems(formData).subscribe(
+      (res : any) => {
        
-    //     console.log(res);
-    //     this.items=res;
+        console.log(res);
+        this.items=res;
        
        
-    //   },
+      },
   
     
   
-    //   (err) => {   console.log(err); }
-    // );
-
-    this.router.navigate(['/customer/items'],{ state: { hotel: this.hotels[id] } }); 
+      (err) => {   console.log(err); }
+    );
+    this.selectedHotel=this.hotels[id];
+this.visible=true;
+   // this.router.navigate(['/customer/items'],{ state: { hotel: this.hotels[id] } }); 
   }
   
 
