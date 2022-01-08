@@ -16,9 +16,18 @@
     <div nz-col nzSpan="15" style='text-align: left'>
 
 
-        <nz-select [(ngModel)]="fromCity" nzPlaceHolder="From City" style='width:80%' (ngModelChange)='change1()'>
+        <nz-select [(ngModel)]="fromCity" [nzDisabled]="loading" nzPlaceHolder="From City" style='width:80%'
+            (ngModelChange)='change1()'>
 
-            <nz-option *ngFor="let city of cities" [nzValue]="city.id" [nzLabel]="city.name"></nz-option>
+
+            <ng-container *ngIf="!loading2">
+                <nz-option *ngFor="let city of cities" [nzValue]="city.id" [nzLabel]="city.name"></nz-option>
+            </ng-container>
+
+            <nz-option *ngIf="loading2" nzDisabled nzCustomContent>
+                <i nz-icon nzType="loading"></i>
+                Loading Data...
+            </nz-option>
 
 
         </nz-select>
@@ -36,7 +45,8 @@
     <div nz-col nzSpan="15" style='text-align: left'>
 
 
-        <nz-select [(ngModel)]="toCity" nzPlaceHolder="To City" style='width:80%' (ngModelChange)='change2()'>
+        <nz-select [(ngModel)]="toCity" [nzDisabled]="loading" nzPlaceHolder="To City" style='width:80%'
+            (ngModelChange)='change2()'>
 
             <nz-option *ngFor="let city of cities1" [nzValue]="city.id" [nzLabel]="city.name"></nz-option>
 
@@ -57,11 +67,14 @@
     <div nz-col nzSpan="15" style='text-align: left'>
 
 
-        <nz-select [(ngModel)]="orderType" nzPlaceHolder="Select Order Type" style='width:80%' (ngModelChange)='change3()'>
+        <nz-select [(ngModel)]="orderType" [nzDisabled]="loading" nzPlaceHolder="Order Type" style='width:80%'
+            (ngModelChange)='change3()'>
 
-            <nz-option nzValue="0" nzLabel="Take Away"></nz-option>
+            <nz-option *ngFor="let orderType of orderTypes;index as i" [nzValue]="i" [nzLabel]="orderType"></nz-option>
+
+            <!-- <nz-option nzValue="0" nzLabel="Take Away"></nz-option>
             <nz-option nzValue="1" nzLabel="Dine In"></nz-option>
-            <nz-option nzValue="2" nzLabel="Drive In"></nz-option>
+            <nz-option nzValue="2" nzLabel="Drive In"></nz-option> -->
 
 
         </nz-select>
@@ -80,7 +93,8 @@
     <div nz-col nzSpan="15" style='text-align: left'>
 
 
-        <nz-select [(ngModel)]="distance" nzPlaceHolder="Select Distance" style='width:80%' (ngModelChange)='change4()'>
+        <nz-select [(ngModel)]="distance" [nzDisabled]="loading" nzPlaceHolder="Select Distance" style='width:80%'
+            (ngModelChange)='change4()'>
 
             <nz-option nzValue="0" nzLabel="0-50 KM"></nz-option>
             <nz-option nzValue="1" nzLabel="51-100 KM"></nz-option>
@@ -113,49 +127,50 @@
     <div nz-col nzSpan="12" style='text-align: left'> &nbsp;</div>
 </div>
 
+<ng-container *ngIf="!loading">
+    <ng-container *ngIf="hotels && hotels.length > 0">
+        <div nz-row *ngFor="let hotel of hotels; index as i">
+            <div nz-col nzSpan="24">
+                <div style='text-align: left' class='coupon' style="width:300px; height: auto;">
+
+                    <img (click)="getItems(hotel.id,i)" alt="example"
+                        style="width:297px; height: 200px;padding-left:3px;padding-right:2px;padding-top: 3px; border-radius: 15px;"
+                        src="https://www.oberoihotels.com/-/media/oberoi-hotels/website-images/the-oberoi-new-delhi/dining/detail/omya---indian-restaurant-1.jpg?w=724&hash=639804eb8fb6e21e117d0a44e309aa1b" />
+
+                    <div style='padding-left:20px'>
+
+                        <b> {{hotel.name}}</b>
+                        <br />
+
+                        <b> <span class='highlight'>
+                                <nz-rate [ngModel]="1" [nzCount]="1" nzDisabled></nz-rate> 4.2
+                            </span> &nbsp; &nbsp; &nbsp; 50 min &nbsp; &nbsp;{{hotel.distance}} Km <br />
+                            Chinese, Arabian, Fast Food<br />
+                            {{hotel.address}}
+                        </b>
+                    </div>
 
 
+                </div>
+                <div nz-row>
 
-<div nz-row>
-
-    <div nz-col nzSpan="24" style='text-align: left'> &nbsp;</div>
-</div>
+                    <div nz-col nzSpan="24" style='text-align: left'> &nbsp;</div>
+                </div>
 
 
-
-<ng-container *ngIf="hotels && hotels.length > 0">
-<div nz-row *ngFor="let hotel of hotels">
-    <div nz-col nzSpan="24">
-        <div style='text-align: left' class='coupon' style="width:300px; height: auto;">
-
-            <img (click) = "getItems(hotel.id)" alt="example"
-                style="width:297px; height: 200px;padding-left:3px;padding-right:2px;padding-top: 3px; border-radius: 15px;"
-                src="https://www.oberoihotels.com/-/media/oberoi-hotels/website-images/the-oberoi-new-delhi/dining/detail/omya---indian-restaurant-1.jpg?w=724&hash=639804eb8fb6e21e117d0a44e309aa1b" />
-
-            <div style='padding-left:20px'>
-
-                <b> {{hotel.name}}</b>
-                <br />
-
-                <b> <span class='highlight'>
-                        <nz-rate [ngModel]="1" [nzCount]="1" nzDisabled></nz-rate> 4.2
-                    </span> &nbsp; &nbsp; &nbsp; 50 min &nbsp; &nbsp;{{hotel.distance}} Km <br />
-                    Chinese, Arabian, Fast Food<br />
-                    {{hotel.address}}
-                </b>
             </div>
-
-
         </div>
-        <div nz-row>
-
-            <div nz-col nzSpan="24" style='text-align: left'> &nbsp;</div>
-        </div>
-
-
-    </div>
-</div>
+    </ng-container>
 </ng-container>
+
+
+<ng-container *ngIf="loading">
+    <div nz-col nzSpan="24" style='text-align: center'>
+        <nz-spin nzTip="Please wait....Loading Details" nzSimple [nzSize]="'large'"></nz-spin>
+    </div>
+</ng-container>
+
+
 <div nz-row>
     <div nz-col nzSpan="6" style='text-align: left'>&nbsp;</div>
     <div nz-col nzSpan="6" style='text-align: left'>&nbsp;</div>
@@ -163,72 +178,201 @@
 </div>
 
 
-<nz-drawer
-[nzClosable]="false"
-[nzVisible]="visible"
-nzPlacement="right"
-[nzTitle]="itemTitle"
-(nzOnClose)="close()"
-[nzWidth]="screenWidth"
->
-<ng-container *nzDrawerContent>
- 
-<ng-container *ngIf="items && items.length > 0">
+<nz-drawer [nzClosable]="false" [nzVisible]="visible" nzPlacement="right" [nzTitle]="itemTitle" (nzOnClose)="close()"
+    [nzWidth]="screenWidth">
+    <ng-container *nzDrawerContent>
 
-    <div nz-row *ngFor="let item of items" style='text-align: left' class='coupon' style="width:300px; height: auto;">
+        <ng-container *ngIf="!loading1">
 
-        <div nz-col nzSpan="16">
-            
-            <h3>{{item.name}}</h3>
+            <ng-container *ngIf="items && items.length > 0">
 
-            <h5> {{item.price}}</h5>
+                <div nz-row *ngFor="let item of items; index as i" style='text-align: left' class='item'
+                    style="width:280px; height: auto;">
 
-            <h5> Enjoy your favourite Dish. Add on Starter and beverage</h5>
-                
+                    <div nz-col nzSpan="16">
+
+                        <h3>{{item.name}}</h3>
+
+                        <h5> {{item.price}}</h5>
+
+                        <h5> Enjoy your favourite Dish. Add on Starter and beverage</h5>
+
+
+                    </div>
+                    <div nz-col nzSpan="8" style='padding: 0px; position: relative;'>
+
+                        <img alt="example"
+                            style="width:100%; height: 80%;padding-left:3px;padding-right:2px;padding-top: 3px; border-radius: 15px;"
+                            src="https://www.oberoihotels.com/-/media/oberoi-hotels/website-images/the-oberoi-new-delhi/dining/detail/omya---indian-restaurant-1.jpg?w=724&hash=639804eb8fb6e21e117d0a44e309aa1b" />
+                        <div style="position: absolute; bottom: -10%;  left: 50%; transform: translate(-50%, -50%);">
+
+                            <ng-container *ngIf="item.count == null || item.count==0">
+                                <button nz-button nzType="default" (click)="addItem(item)"> ADD </button>
+                            </ng-container>
+                            <ng-container *ngIf="item.count>0">
+                                <nz-button-group>
+                                    <button nzSize="small" nz-button nzType="default" (click)="decreement(item)"> <i
+                                            nz-icon nzType='minus'></i> </button>
+                                    <button nzSize="small" nz-button nzType="default"> {{item.count}} </button>
+                                    <button nzSize="small" nz-button nzType="default" (click)="increement(item)"> <i
+                                            nz-icon nzType='plus'></i> </button>
+                                </nz-button-group>
+                            </ng-container>
+
+                        </div>
+                    </div>
+
+                    <div nz-col nzSpan="24">
+                        <hr />
+                    </div>
 
                 </div>
-                <div nz-col nzSpan="8" style='padding: 0px; position: relative;'>
+                <ng-container *ngIf="cart.items.length > 0">
+                    <nz-affix nzOffsetBottom=10>
+                        <button nz-button nzType="primary" nzShape="round" style='width: 100%;' nzSize="large"
+                            (click)='cartOpen()'>
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'> {{cart.totalPrice}} |
+                                    {{cart.items.length}} items </div>
+                                <div nz-col nzSpan="12" style='text-align: right'> View Cart &nbsp;&nbsp;<i nz-icon
+                                        nzType="shopping-cart" nzTheme="outline"></i> </div>
 
-                    <img alt="example"
-                    style="width:100%; height: 80%;padding-left:3px;padding-right:2px;padding-top: 3px; border-radius: 15px;"
-                    src="https://www.oberoihotels.com/-/media/oberoi-hotels/website-images/the-oberoi-new-delhi/dining/detail/omya---indian-restaurant-1.jpg?w=724&hash=639804eb8fb6e21e117d0a44e309aa1b" />
-    <div style="position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);">Centered</div>
-                </div>
-                </div>
-         
-    
+                            </div>
+                        </button>
+                    </nz-affix>
+                </ng-container>
 
 
-</ng-container>
+            </ng-container>
+        </ng-container>
+        <ng-container *ngIf="loading1">
+            <div nz-col nzSpan="24" style='text-align: center'>
+                <nz-spin nzTip="Please wait....Loading Details" nzSimple [nzSize]="'large'"></nz-spin>
+            </div>
+        </ng-container>
 
-</ng-container>
+
+    </ng-container>
 </nz-drawer>
 
 
 <ng-template #itemTitle>
     <div nz-row>
 
-        <div nz-col nzSpan="1" style='text-align: left'>
-    <i nz-icon nzType="arrow-left" nzTheme="outline"></i>
-   </div>
-   <div nz-col nzSpan="23" style='text-align: left'><b>{{selectedHotel.name}}</b><br/>
-     {{selectedHotel.address}} | {{selectedHotel.address}} KM | 50 min 
-     </div>
-     </div>
-     <hr/>
-     <nz-select nzPlaceHolder="Select Order Type" style='width:50%' (ngModelChange)='change3()'>
+        <div nz-col nzSpan="3" style='text-align: left'>
+            <i nz-icon nzType="arrow-left" nzTheme="outline" (click)='close()'></i>
+        </div>
+        <div nz-col nzSpan="20" style='text-align: left'><b>{{selectedHotel.name}}</b><br />
+            {{selectedHotel.address}} | {{selectedHotel.distance}} KM | {{orderTypes[orderType]}} | 50 min
+        </div>
+    </div>
+
+    <!-- <nz-select nzPlaceHolder="Select Order Type" style='width:50%' (ngModelChange)='change3()'>
 
         <nz-option nzValue="0" nzLabel="Take Away"></nz-option>
         <nz-option nzValue="1" nzLabel="Dine In"></nz-option>
         <nz-option nzValue="2" nzLabel="Drive In"></nz-option>
 
 
-    </nz-select>
-
- 
+    </nz-select> -->
 
 
-  </ng-template>
+
+
+</ng-template>
+
+
+<ng-template #itemTitle1>
+    <div nz-row>
+
+        <div nz-col nzSpan="3" style='text-align: left'>
+            <i nz-icon nzType="arrow-left" nzTheme="outline" (click)='cartClose()'></i>
+        </div>
+        <div nz-col nzSpan="20" style='text-align: left'><b>{{selectedHotel.name}}</b><br />
+            {{selectedHotel.address}} | {{selectedHotel.distance}} KM | {{orderTypes[orderType]}} | 50 min
+        </div>
+    </div>
+
+    <!-- <nz-select nzPlaceHolder="Select Order Type" style='width:50%' (ngModelChange)='change3()'>
+
+        <nz-option nzValue="0" nzLabel="Take Away"></nz-option>
+        <nz-option nzValue="1" nzLabel="Dine In"></nz-option>
+        <nz-option nzValue="2" nzLabel="Drive In"></nz-option>
+
+
+    </nz-select> -->
+
+
+
+
+</ng-template>
+
+
+<nz-drawer [nzClosable]="false" [nzVisible]="cartVisible" nzPlacement="right" [nzTitle]="itemTitle1"
+    (nzOnClose)="cartClose()" [nzWidth]="screenWidth" [nzFooter]="cartFooter">
+    <ng-container *nzDrawerContent>
+
+        <h2> Your Cart </h2>
+
+
+        <ng-container *ngIf="!loading4">
+
+            <div nz-row *ngFor="let item of cart.items; index as i">
+
+                <div nz-col nzSpan="12" style='text-align: left'>
+
+
+                    <h3> <i nz-icon nzType="instagram" nzTheme="outline" style='color:green'></i> &nbsp; {{item.name}}
+                        ({{item.price}})</h3>
+                </div>
+                <div nz-col nzSpan="8" style='text-align: left'>
+                    <nz-button-group>
+                        <button nzSize='small' nz-button nzType="default" (click)="decreement(item)"> <i nz-icon
+                                nzType='minus'></i> </button>
+                        <button nzSize='small' nz-button nzType="default"> {{item.count}} </button>
+                        <button nzSize='small' nz-button nzType="default" (click)="increement(item)"> <i nz-icon
+                                nzType='plus'></i> </button>
+                    </nz-button-group>
+                </div>
+                <div nz-col nzSpan="4" style='text-align: right'>
+                    <h3>{{item.count * item.price}}</h3>
+                </div>
+            </div>
+
+        </ng-container>
+
+        <ng-container *ngIf="loading4">
+            <div nz-col nzSpan="24" style='text-align: center'>
+                <nz-spin nzTip="Please wait....Loading Details" nzSimple [nzSize]="'large'"></nz-spin>
+            </div>
+        </ng-container>
+
+
+    </ng-container>
+</nz-drawer>
+
+
+<ng-template #cartFooter>
+    <div nz-row>
+
+        <div nz-col nzSpan="3" style='text-align: left'>
+            <h3>{{cart.totalPrice}}</h3>
+        </div>
+        <div nz-col nzSpan="20" style='text-align: right'>
+            <button nz-button nzType="primary" [disabled]="loading4" (click)="payment()"> Make Payment </button>
+        </div>
+    </div>
+
+    <!-- <nz-select nzPlaceHolder="Select Order Type" style='width:50%' (ngModelChange)='change3()'>
+
+        <nz-option nzValue="0" nzLabel="Take Away"></nz-option>
+        <nz-option nzValue="1" nzLabel="Dine In"></nz-option>
+        <nz-option nzValue="2" nzLabel="Drive In"></nz-option>
+
+
+    </nz-select> -->
+
+
+
+
+</ng-template>

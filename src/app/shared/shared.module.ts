@@ -28,6 +28,7 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import {FormsModule} from '@angular/forms';
 import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
 
 @NgModule({
   declarations: [],
@@ -61,7 +62,8 @@ import { NzCardModule } from 'ng-zorro-antd/card';
     NzImageModule,
     NzNotificationModule,
     NzTimePickerModule,
-    NzCheckboxModule
+    NzCheckboxModule,
+    NzProgressModule
   ],
 
   exports:     [
@@ -93,7 +95,9 @@ import { NzCardModule } from 'ng-zorro-antd/card';
     NzImageModule,
     NzNotificationModule,
     NzTimePickerModule,
-    NzCheckboxModule
+    NzCheckboxModule,
+    NzCardModule,
+    NzProgressModule
   ],
 
 

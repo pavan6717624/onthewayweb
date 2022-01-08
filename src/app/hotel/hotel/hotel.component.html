@@ -1,0 +1,985 @@
+<div nz-row>&nbsp;</div>
+<!-- <nz-progress [nzPercent]="30" [nzShowInfo]='false'></nz-progress> -->
+
+
+<ng-container *ngIf="loading1 || loading2">
+    <div nz-row>
+        <div nz-col nzSpan="24" style='text-align: center'>
+            <nz-spin nzTip="Please wait....Loading Details" nzSimple [nzSize]="'large'"></nz-spin>
+        </div>
+    </div>
+</ng-container>
+
+
+<ng-container *ngIf="!(loading1 || loading2)">
+
+    <div nz-row>
+        <div nz-col nzSpan="2" style='text-align: left'>&nbsp;</div>
+
+        <div nz-col nzSpan="22" style='text-align: left'>
+            <h3>{{hotel.name}}</h3>
+
+
+            <div nz-row>
+                <div nz-col nzSpan="12" style='text-align: left'>
+                    <ng-container *ngIf="hotel.onlineStatus">
+                        <b><span style='color:green'>You are Online</span></b>
+                    </ng-container>
+
+                    <ng-container *ngIf="!hotel.onlineStatus">
+                        <b><span style='color:red'>You are Offline</span></b>
+                    </ng-container>
+                </div>
+                <div nz-col nzSpan="12" style='text-align: left'>
+                    <nz-switch [nzLoading]='statusChanging' [(ngModel)]="hotel.onlineStatus"
+                        (ngModelChange)="statusChange()" [nzCheckedChildren]="checkedTemplate"
+                        [nzUnCheckedChildren]="unCheckedTemplate">
+                    </nz-switch>
+                    <ng-template #checkedTemplate><i nz-icon nzType="check"></i></ng-template>
+                    <ng-template #unCheckedTemplate><i nz-icon nzType="close"></i></ng-template>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div nz-row>&nbsp;</div>
+    <div nz-row>
+        <div nz-col nzSpan="1" style='text-align: left'>&nbsp;</div>
+        <div nz-col nzSpan="22" style='text-align: left'>
+            <h2>Orders</h2>
+
+        </div>
+    </div>
+
+
+    <div nz-row>
+        <div nz-col nzSpan="1" style='text-align: left'>&nbsp;</div>
+        <div nz-col nzSpan="22" style='text-align: left' style='overflow:auto;width:100%;height:100%'>
+            <nz-tabset style='overflow:auto;width:100%;height:100%'>
+                <nz-tab [nzTitle]="'New (' + receivedOrderDetails.length + ')'">
+
+                    <div nz-row *ngFor="let item of receivedOrderDetails; index as i" style='text-align: left'
+                        style="width:99%; height: auto; padding:5px;border-radius: 15px;"
+                        [style.backgroundColor]="i%2==1?'#eee':'fff'">
+                        <div nz-col nzSpan="24" style='text-align: left'>
+                            <div nz-row (click)='getOrderItems(item)'>
+                                <div nz-col nzSpan="22" style='text-align: left'>
+                                    <div nz-row>
+                                        <div nz-col nzSpan="8" style='text-align: left'>
+                                            <h3>#Order {{item.id}} </h3>
+                                        </div>
+                                        <div nz-col nzSpan="16" style='text-align: left'>
+                                            <span style='background-color: bisque;'>
+                                                &nbsp;&nbsp;{{item.orderType}}&nbsp;&nbsp;</span>
+                                        </div>
+                                    </div>
+
+                                    <h5>{{item.orderOn}}</h5>
+
+
+                                </div>
+
+
+                                <div nz-col nzSpan="2" style='text-align: right'>
+
+                                    <i nz-icon nzType="right" nzTheme="outline"></i>
+
+                                </div>
+                            </div>
+
+
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    From City
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.fromCity}} </b>
+
+                                </div>
+                            </div>
+
+
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    To City
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.toCity}} </b>
+
+                                </div>
+                            </div>
+
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    User
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.userId}} </b>
+
+                                </div>
+                            </div>
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    Mobile
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.mobile}} </b>
+
+                                </div>
+                            </div>
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    Price
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.totalPrice}} </b>
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
+
+
+
+
+                </nz-tab>
+                <nz-tab [nzTitle]="'Accepted (' + acceptedOrderDetails.length + ')'">
+
+                    <div nz-row *ngFor="let item of acceptedOrderDetails; index as i" style='text-align: left'
+                        style="width:99%; height: auto; padding:5px;border-radius: 15px;"
+                        [style.backgroundColor]="i%2==1?'#eee':'fff'">
+                        <div nz-col nzSpan="24" style='text-align: left'>
+                            <div nz-row (click)='getOrderItems(item)'>
+                                <div nz-col nzSpan="22" style='text-align: left'>
+                                    <div nz-row>
+                                        <div nz-col nzSpan="8" style='text-align: left'>
+                                            <h3>#Order {{item.id}} </h3>
+                                        </div>
+                                        <div nz-col nzSpan="16" style='text-align: left'>
+                                            <span style='background-color: bisque;'>
+                                                &nbsp;&nbsp;{{item.orderType}}&nbsp;&nbsp;</span>
+                                        </div>
+                                    </div>
+
+                                    <h5>{{item.orderOn}}</h5>
+
+
+                                </div>
+
+
+                                <div nz-col nzSpan="2" style='text-align: right'>
+
+                                    <i nz-icon nzType="right" nzTheme="outline"></i>
+
+                                </div>
+                            </div>
+
+
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    From City
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.fromCity}} </b>
+
+                                </div>
+                            </div>
+
+
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    To City
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.toCity}} </b>
+
+                                </div>
+                            </div>
+
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    User
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.userId}} </b>
+
+                                </div>
+                            </div>
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    Mobile
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.mobile}} </b>
+
+                                </div>
+                            </div>
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    Price
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.totalPrice}} </b>
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
+
+
+                </nz-tab>
+                <nz-tab [nzTitle]="'Progress (' + progressOrderDetails.length + ')'">
+
+                    <div nz-row *ngFor="let item of progressOrderDetails; index as i" style='text-align: left'
+                        style="width:99%; height: auto; padding:5px;border-radius: 15px;"
+                        [style.backgroundColor]="i%2==1?'#eee':'fff'">
+                        <div nz-col nzSpan="24" style='text-align: left'>
+                            <div nz-row (click)='getOrderItems(item)'>
+                                <div nz-col nzSpan="22" style='text-align: left'>
+                                    <div nz-row>
+                                        <div nz-col nzSpan="8" style='text-align: left'>
+                                            <h3>#Order {{item.id}} </h3>
+                                        </div>
+                                        <div nz-col nzSpan="16" style='text-align: left'>
+                                            <span style='background-color: bisque;'>
+                                                &nbsp;&nbsp;{{item.orderType}}&nbsp;&nbsp;</span>
+                                        </div>
+                                    </div>
+
+                                    <h5>{{item.orderOn}}</h5>
+
+
+                                </div>
+
+
+                                <div nz-col nzSpan="2" style='text-align: right'>
+
+                                    <i nz-icon nzType="right" nzTheme="outline"></i>
+
+                                </div>
+                            </div>
+
+
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    From City
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.fromCity}} </b>
+
+                                </div>
+                            </div>
+
+
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    To City
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.toCity}} </b>
+
+                                </div>
+                            </div>
+
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    User
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.userId}} </b>
+
+                                </div>
+                            </div>
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    Mobile
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.mobile}} </b>
+
+                                </div>
+                            </div>
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    Price
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.totalPrice}} </b>
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
+
+
+
+                </nz-tab>
+                <nz-tab [nzTitle]="'Ready (' + readyOrderDetails.length + ')'">
+
+
+                    <div nz-row *ngFor="let item of readyOrderDetails; index as i" style='text-align: left'
+                        style="width:99%; height: auto; padding:5px;border-radius: 15px;"
+                        [style.backgroundColor]="i%2==1?'#eee':'fff'">
+                        <div nz-col nzSpan="24" style='text-align: left'>
+                            <div nz-row (click)='getOrderItems(item)'>
+                                <div nz-col nzSpan="22" style='text-align: left'>
+                                    <div nz-row>
+                                        <div nz-col nzSpan="8" style='text-align: left'>
+                                            <h3>#Order {{item.id}} </h3>
+                                        </div>
+                                        <div nz-col nzSpan="16" style='text-align: left'>
+                                            <span style='background-color: bisque;'>
+                                                &nbsp;&nbsp;{{item.orderType}}&nbsp;&nbsp;</span>
+                                        </div>
+                                    </div>
+
+                                    <h5>{{item.orderOn}}</h5>
+
+
+                                </div>
+
+
+                                <div nz-col nzSpan="2" style='text-align: right'>
+
+                                    <i nz-icon nzType="right" nzTheme="outline"></i>
+
+                                </div>
+                            </div>
+
+
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    From City
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.fromCity}} </b>
+
+                                </div>
+                            </div>
+
+
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    To City
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.toCity}} </b>
+
+                                </div>
+                            </div>
+
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    User
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.userId}} </b>
+
+                                </div>
+                            </div>
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    Mobile
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.mobile}} </b>
+
+                                </div>
+                            </div>
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    Price
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.totalPrice}} </b>
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
+
+
+                </nz-tab>
+                <nz-tab [nzTitle]="'Completed (' + completedOrderDetails.length + ')'">
+
+                    <div nz-row *ngFor="let item of completedOrderDetails; index as i" style='text-align: left'
+                        style="width:99%; height: auto; padding:5px;border-radius: 15px;"
+                        [style.backgroundColor]="i%2==1?'#eee':'fff'">
+                        <div nz-col nzSpan="24" style='text-align: left'>
+                            <div nz-row (click)='getOrderItems(item)'>
+                                <div nz-col nzSpan="22" style='text-align: left'>
+                                    <div nz-row>
+                                        <div nz-col nzSpan="8" style='text-align: left'>
+                                            <h3>#Order {{item.id}} </h3>
+                                        </div>
+                                        <div nz-col nzSpan="16" style='text-align: left'>
+                                            <span style='background-color: bisque;'>
+                                                &nbsp;&nbsp;{{item.orderType}}&nbsp;&nbsp;</span>
+                                        </div>
+                                    </div>
+
+                                    <h5>{{item.orderOn}}</h5>
+
+
+                                </div>
+
+
+                                <div nz-col nzSpan="2" style='text-align: right'>
+
+                                    <i nz-icon nzType="right" nzTheme="outline"></i>
+
+                                </div>
+                            </div>
+
+
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    From City
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.fromCity}} </b>
+
+                                </div>
+                            </div>
+
+
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    To City
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.toCity}} </b>
+
+                                </div>
+                            </div>
+
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    User
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.userId}} </b>
+
+                                </div>
+                            </div>
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    Mobile
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.mobile}} </b>
+
+                                </div>
+                            </div>
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    Price
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.totalPrice}} </b>
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
+
+
+
+                </nz-tab>
+                <nz-tab [nzTitle]="'Cancelled (' + cancelledOrderDetails.length + ')'">
+
+
+                    <div nz-row *ngFor="let item of cancelledOrderDetails; index as i" style='text-align: left'
+                        style="width:99%; height: auto; padding:5px;border-radius: 15px;"
+                        [style.backgroundColor]="i%2==1?'#eee':'fff'">
+                        <div nz-col nzSpan="24" style='text-align: left'>
+                            <div nz-row (click)='getOrderItems(item)'>
+                                <div nz-col nzSpan="22" style='text-align: left'>
+                                    <div nz-row>
+                                        <div nz-col nzSpan="8" style='text-align: left'>
+                                            <h3>#Order {{item.id}} </h3>
+                                        </div>
+                                        <div nz-col nzSpan="16" style='text-align: left'>
+                                            <span style='background-color: bisque;'>
+                                                &nbsp;&nbsp;{{item.orderType}}&nbsp;&nbsp;</span>
+                                        </div>
+                                    </div>
+
+                                    <h5>{{item.orderOn}}</h5>
+
+
+                                </div>
+
+
+                                <div nz-col nzSpan="2" style='text-align: right'>
+
+                                    <i nz-icon nzType="right" nzTheme="outline"></i>
+
+                                </div>
+                            </div>
+
+
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    From City
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.fromCity}} </b>
+
+                                </div>
+                            </div>
+
+
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    To City
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.toCity}} </b>
+
+                                </div>
+                            </div>
+
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    User
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.userId}} </b>
+
+                                </div>
+                            </div>
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    Mobile
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.mobile}} </b>
+
+                                </div>
+                            </div>
+                            <div nz-row>
+                                <div nz-col nzSpan="12" style='text-align: left'>
+
+                                    Price
+
+                                </div>
+                                <div nz-col nzSpan="12" style='text-align: right'>
+
+                                    <b> {{item.totalPrice}} </b>
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
+
+
+                </nz-tab>
+            </nz-tabset>
+        </div>
+        <div nz-col nzSpan="1" style='text-align: left'>&nbsp;</div>
+    </div>
+
+    <div nz-row>&nbsp;</div>
+
+</ng-container>
+
+
+<nz-drawer [nzClosable]="false" [nzVisible]="orderVisible" nzPlacement="right" [nzTitle]="itemTitle1"
+    (nzOnClose)="orderClose()" [nzWidth]="screenWidth">
+    <ng-container *nzDrawerContent>
+
+        <ng-container *ngIf="loading3">
+            <div nz-row>
+                <div nz-col nzSpan="24" style='text-align: center'>
+                    <nz-spin nzTip="Please wait....Loading Details" nzSimple [nzSize]="'large'"></nz-spin>
+                </div>
+            </div>
+        </ng-container>
+
+
+        <ng-container *ngIf="!(loading3)">
+
+            <div nz-row>
+                <div nz-col nzSpan="12" style='text-align: left'>
+                    <h3>Order Summary </h3>
+                </div>
+                <div nz-col nzSpan="12" style='text-align: left'>
+                    <span style='background-color: bisque;'>
+                        &nbsp;&nbsp;{{selectedOrder.orderType}}&nbsp;&nbsp;</span>
+                </div>
+            </div>
+
+            <div nz-row style='text-align: left' style="width:99%; height: auto;"
+                *ngFor="let item of items; index as i">
+                <div nz-col nzSpan="2" style='text-align: left; padding:5px;'>
+
+
+                    <b> <i nz-icon nzType="instagram" nzTheme="outline" style='color:green'></i> </b>
+
+                </div>
+
+                <div nz-col nzSpan="16" style='text-align: left; padding:5px;'>
+
+                    <b> {{item.name}} </b> <br /> {{item.price}} * {{item.count}}
+
+                </div>
+
+                <div nz-col nzSpan="6" style='text-align: right; padding:5px;'> <br />
+
+                    <b> {{item.price * item.count}} </b>
+
+                </div>
+            </div>
+
+            <div nz-row>
+
+                <div nz-col nzSpan="24">
+
+                    <hr style='color:#ccc'>
+                </div>
+            </div>
+            <div nz-row style='text-align: left' style="width:99%; height: auto;">
+                <div nz-col nzSpan="12" style='text-align: left; padding:5px;'>
+
+                    <b>Total Price</b>
+                </div>
+
+                <div nz-col nzSpan="12" style='text-align: right; padding:5px;'>
+
+                    <h3> {{selectedOrder.totalPrice}} </h3>
+                </div>
+
+            </div>
+
+            <div nz-row>
+
+                <div nz-col nzSpan="24">
+
+                    <hr style='color:#ccc'>
+                </div>
+            </div>
+
+            <div nz-row style='text-align: left' style="width:99%; height: auto;">
+
+                <ng-container *ngIf="selectedOrder.orderStatus==='Received'">
+                    <div nz-col nzSpan="12" style='text-align: center; padding:5px;'>
+                        <button nz-button nzDanger nzShape="round" (click)="reject(selectedOrder)"> Reject Order
+                        </button>
+
+                    </div>
+                    <div nz-col nzSpan="12" style='text-align: center; padding:5px;'>
+
+                        <button nz-button nzType="primary" nzShape="round" (click)="submitOrder('Accepted')"> Accept Order
+                        </button>
+
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="selectedOrder.orderStatus==='Cancelled'">
+
+                    <div nz-col nzSpan="24" style='text-align: left; padding:5px;'>
+                    <h3> Reason for Rejection</h3> 
+
+                    <div style='text-align:left'> {{selectedOrder.message}} </div>
+
+                    </div>
+
+                </ng-container>
+
+
+                <ng-container *ngIf="selectedOrder.orderStatus==='Accepted'">
+                    <div nz-col nzSpan="24" style='text-align: center; padding:5px;'>
+
+                        <button nz-button nzType="primary" style='width:100%' nzShape="round" (click)="submitOrder('Progress')"> In Progress
+                        </button>
+
+                    </div>
+                </ng-container>
+    
+                <ng-container *ngIf="selectedOrder.orderStatus==='Progress'">
+                    <div nz-col nzSpan="24" style='text-align: center; padding:5px;'>
+
+                        <button nz-button nzType="primary" style='width:100%' nzShape="round" (click)="submitOrder('Ready')"> Order Ready
+                        </button>
+
+                    </div>
+                </ng-container>
+    
+    
+                <ng-container *ngIf="selectedOrder.orderStatus==='Ready'">
+                    <div nz-col nzSpan="24" style='text-align: center; padding:5px;'>
+
+                        <button nz-button nzType="primary" style='width:100%' nzShape="round" (click)="submitOrder('Completed')"> Order Completed
+                        </button>
+
+                    </div>
+                </ng-container>
+    
+    
+                <ng-container *ngIf="selectedOrder.orderStatus==='Completed'">
+                    <div nz-col nzSpan="24" style='text-align: center; padding:0px;'>
+
+                        <nz-result
+                        nzStatus="success"
+                        nzTitle="Order Completed"
+                        nzSubTitle=""
+                      >
+                      </nz-result>
+
+                    </div>
+                </ng-container>
+    
+    
+
+
+            </div>
+
+
+        </ng-container>
+    </ng-container>
+</nz-drawer>
+
+<ng-template #itemTitle1>
+    <div nz-row style='padding:0px'>
+
+        <div nz-col nzSpan="2" style='text-align: left'>
+            <i nz-icon nzType="arrow-left" nzTheme="outline" (click)='orderClose()'></i>
+        </div>
+        <div nz-col nzSpan="22" style='text-align: left'>
+
+            <h3> #Order Id {{selectedOrder.id}}</h3>
+
+
+            <ng-container *ngIf="selectedOrder.orderStatus==='Received'">
+                <b>Awaiting Approval</b>
+            </ng-container>
+
+            <ng-container *ngIf="selectedOrder.orderStatus==='Accepted'">
+                <b>Accepted Orders</b>
+            </ng-container>
+
+            <ng-container *ngIf="selectedOrder.orderStatus==='Progress'">
+                <b>In Progress</b>
+            </ng-container>
+
+
+            <ng-container *ngIf="selectedOrder.orderStatus==='Ready'">
+                <b>Order Ready</b>
+            </ng-container>
+
+
+            <ng-container *ngIf="selectedOrder.orderStatus==='Completed'">
+                <b>Completed</b>
+            </ng-container>
+
+
+            <ng-container *ngIf="selectedOrder.orderStatus==='Cancelled'">
+                <b>Cancelled</b>
+            </ng-container>
+
+
+
+            <h5> {{selectedOrder.orderStatus}} - {{selectedOrder.orderOn}} </h5>
+
+            <div nz-row>
+                <div nz-col nzSpan="4" style='text-align: left;' style='padding-left:2px'>
+                    <nz-progress [nzStrokeWidth]="5"
+                        [nzStrokeColor]="selectedOrder.orderStatus==='Cancelled'?'red' : '#1890ff'"
+                        [nzPercent]="selectedOrder.orderStatus==='Received' || selectedOrder.orderStatus==='Accepted' || selectedOrder.orderStatus==='Progress' || selectedOrder.orderStatus==='Ready' || selectedOrder.orderStatus==='Completed' || selectedOrder.orderStatus==='Cancelled'?100:0"
+                        [nzShowInfo]='false'>
+                    </nz-progress>
+                </div>
+
+
+
+                <div nz-col nzSpan="4" style='text-align: left;' style='padding-left:2px'>
+                    <nz-progress [nzStrokeWidth]="5"
+                        [nzStrokeColor]="selectedOrder.orderStatus==='Cancelled'?'red' : '#1890ff'"
+                        [nzPercent]="selectedOrder.orderStatus==='Accepted' || selectedOrder.orderStatus==='Progress' || selectedOrder.orderStatus==='Ready' || selectedOrder.orderStatus==='Completed' || selectedOrder.orderStatus==='Cancelled'?100:0"
+                        [nzShowInfo]='false'>
+                    </nz-progress>
+                </div>
+
+
+
+                <div nz-col nzSpan="4" style='text-align: left;' style='padding-left:2px'>
+                    <nz-progress [nzStrokeWidth]="5"
+                        [nzStrokeColor]="selectedOrder.orderStatus==='Cancelled'?'red' : '#1890ff'"
+                        [nzPercent]="selectedOrder.orderStatus==='Progress' || selectedOrder.orderStatus==='Ready' || selectedOrder.orderStatus==='Completed' || selectedOrder.orderStatus==='Cancelled'?100:0"
+                        [nzShowInfo]='false'>
+                    </nz-progress>
+                </div>
+
+
+                <div nz-col nzSpan="4" style='text-align: left;' style='padding-left:2px'>
+                    <nz-progress [nzStrokeWidth]="5"
+                        [nzStrokeColor]="selectedOrder.orderStatus==='Cancelled'?'red' : '#1890ff'"
+                        [nzPercent]="selectedOrder.orderStatus==='Ready' || selectedOrder.orderStatus==='Completed' || selectedOrder.orderStatus==='Cancelled'?100:0"
+                        [nzShowInfo]='false'>
+                    </nz-progress>
+                </div>
+
+
+                <div nz-col nzSpan="4" style='text-align: left;' style='padding-left:2px'>
+                    <nz-progress [nzStrokeWidth]="5"
+                        [nzStrokeColor]="selectedOrder.orderStatus==='Cancelled'?'red' : '#1890ff'"
+                        [nzPercent]="selectedOrder.orderStatus==='Completed' || selectedOrder.orderStatus==='Cancelled'?100:0"
+                        [nzShowInfo]='false'>
+                    </nz-progress>
+                </div>
+
+                <div nz-col nzSpan="4" style='text-align: left;' style='padding-left:2px'>
+
+                    <ng-container *ngIf="selectedOrder.orderStatus==='Cancelled'">
+                        &nbsp; <i nz-icon nzType="close-circle" nzTheme="fill" style='color:red'></i>
+                    </ng-container>
+
+                    <ng-container *ngIf="selectedOrder.orderStatus==='Completed'">
+                        &nbsp; <i nz-icon nzType="check-circle" nzTheme="fill" style='color:green'></i>
+                    </ng-container>
+
+                </div>
+
+
+
+
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+</ng-template>
+
+<nz-modal [nzVisible]="rejectVisible" [nzContent]="modalContent" [nzFooter]="null"
+    (nzOnCancel)="rejectVisible = false;">
+    <ng-template #modalContent>
+
+        <h3> Reason for Rejection</h3>
+
+        <textarea rows="4" style='border-radius: 15px;' nz-input [(ngModel)]="rejectReason"
+            placeholder="Eg., New Year Sale"></textarea>
+
+        <div nz-row> &nbsp; </div>
+
+        <button nz-button nzType="primary" style='width:100%' nzShape="round" (click)="submitOrder('Cancelled')"> Submit
+        </button>
+
+
+    </ng-template>
+</nz-modal>
