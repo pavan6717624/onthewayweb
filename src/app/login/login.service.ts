@@ -7,12 +7,12 @@ import { HttpClient } from '@angular/common/http';
 })
 export class LoginService {
   getLoginDetails() {
-    return this.http.get('http://localhost:8086/getLoginDetails')
+    return this.http.get('https://onthewayappdemo.herokuapp.com/getLoginDetails')
   }
   login(formData: FormData): Observable<any>
   {
 
-    return this.http.post('http://localhost:8086/login',formData)
+    return this.http.post('https://onthewayappdemo.herokuapp.com/login',formData)
   }
   
   constructor(private http: HttpClient) { }

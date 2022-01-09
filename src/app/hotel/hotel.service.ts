@@ -6,20 +6,20 @@ import { Injectable } from '@angular/core';
 })
 export class HotelService {
   submitOrder(formData: FormData) {
-    return this.http.post('http://localhost:8086/submitOrder',formData);
+    return this.http.post('https://onthewayappdemo.herokuapp.com/submitOrder',formData);
   }
   getOrderItems(formData: FormData) {
-    return this.http.post('http://localhost:8086/getOrderItems',formData);
+    return this.http.post('https://onthewayappdemo.herokuapp.com/getOrderItems',formData);
   }
   getOrderDetails() {
-    return this.http.get('http://localhost:8086/getOrderDetails');
+    return this.http.get('https://onthewayappdemo.herokuapp.com/getOrderDetails');
   }
   hotelStatus(formData: FormData) {
-    return this.http.post('http://localhost:8086/hotelStatus',formData);
+    return this.http.post('https://onthewayappdemo.herokuapp.com/hotelStatus',formData);
   }
 
   getHotelDetails() {
-    return this.http.get('http://localhost:8086/getHotelDetails');
+    return this.http.get('https://onthewayappdemo.herokuapp.com/getHotelDetails');
   }
 
 

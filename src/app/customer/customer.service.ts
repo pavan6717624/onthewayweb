@@ -7,21 +7,21 @@ import { OrderDetails } from './customer/customer.component';
 })
 export class CustomerService {
   getItems(formData: FormData) {
-    return this.http.post('http://localhost:8086/getItems',formData);
+    return this.http.post('https://onthewayappdemo.herokuapp.com/getItems',formData);
   }
   getHotels(formData: FormData) {
-    return this.http.post('http://localhost:8086/getHotels',formData);
+    return this.http.post('https://onthewayappdemo.herokuapp.com/getHotels',formData);
   }
 
   payment(order: OrderDetails) {
-    return this.http.post('http://localhost:8086/payment',order);
+    return this.http.post('https://onthewayappdemo.herokuapp.com/payment',order);
   }
   check() {
-    return this.http.get('http://localhost:8086/check');
+    return this.http.get('https://onthewayappdemo.herokuapp.com/check');
   }
 
   getCities() {
-    return this.http.get('http://localhost:8086/getCities');
+    return this.http.get('https://onthewayappdemo.herokuapp.com/getCities');
   }
 
 
