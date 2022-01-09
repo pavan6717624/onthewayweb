@@ -111,6 +111,11 @@ export class HotelComponent implements OnInit {
     );
   }
 
+  logout()
+{
+  localStorage.removeItem("token");
+  this.router.navigate(['login']);
+}
 
   startLoading()
   {

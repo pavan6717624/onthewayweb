@@ -114,6 +114,12 @@ export class CustomerComponent implements OnInit {
     );
   }
 
+  logout()
+{
+  localStorage.removeItem("token");
+  this.router.navigate(['login']);
+}
+
 
   fromCity: string = '';
   toCity: string = '';
