@@ -38,7 +38,29 @@ export class LoginComponent implements OnInit {
   confirmpassword: string ='';
   loginStatus: LoginStatus = new LoginStatus();
   ngOnInit(): void {
-  }
+    this.getLoginDetails();
+
+
+    // this.login();
+   }
+ 
+   getLoginDetails()
+   {
+     this.logginStatus=true;
+     this.loginService.getLoginDetails().subscribe(
+       (res:any) => {
+        this.logginStatus=false;
+         this.loginStatus=res;
+         const token =    localStorage.getItem('token');
+         if(this.loginStatus.loginStatus && token)
+         {
+         this.loginStatus.jwt=token;
+         this.router.navigate(['user'],  { state: {loginStatus: res }}); 
+         }
+       },
+       (err) => { this.logginStatus=false; }
+     );
+   }
 
 login()
 {

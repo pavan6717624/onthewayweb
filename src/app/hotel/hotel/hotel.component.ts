@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Hotel, Item } from 'src/app/customer/customer/customer.component';
 import { HotelService } from '../hotel.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { LoginStatus } from 'src/app/login/login/login.component';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { LoginService } from 'src/app/login/login.service';
+import { Router } from '@angular/router';
+import { CustomerService } from 'src/app/customer/customer.service';
 
 export class OrderDetails
 {
@@ -52,13 +57,68 @@ export class HotelComponent implements OnInit {
     this.orderVisible=false;
   }
 
-  constructor(private hotelService: HotelService, private msg: NzMessageService) { }
 
   ngOnInit(): void {
+    
+  }
+  loginStatus: LoginStatus = new LoginStatus();
+
+  
+  constructor(private hotelService: HotelService, private notification: NzNotificationService, private loginService: LoginService, private router: Router, private msg: NzMessageService) { 
+
+    const navigation = this.router.getCurrentNavigation();
+    this.loginStatus = (navigation?.extras?.state?.loginStatus);
+
+    console.log(this.loginStatus);
+    
+
+    if (this.loginStatus && (this.loginStatus.userType==='Restaurant' || this.loginStatus.userType==='Admin')) {
+      console.log("in login1");
+      this.startLoading();
+    }
+    else {
+      console.log("in login2");
+      this.getLoginDetails();
+
+    }
+
+
+  }
+
+  
+  getLoginDetails() {
+    this.loading1 = true;
+    this.loginService.getLoginDetails().subscribe(
+      (res: any) => {
+        this.loading1 = false;
+        this.loginStatus = res;
+
+
+        if (this.loginStatus && (this.loginStatus.userType==='Restaurant' || this.loginStatus.userType==='Admin')) {
+    
+        this.startLoading();
+        }
+        else
+        {
+        this.loading1 = false; this.msg.create('error', 'Logging to Corresponding Role...');
+        this.router.navigate(['login']);
+        }
+      },
+      (err : any) => {
+        this.loading1 = false; this.msg.create('error', 'Session Expired. Please Login...');
+        this.router.navigate(['login']);
+      }
+    );
+  }
+
+
+  startLoading()
+  {
     this.getHotelDetails();
     this.getOrderDetails();
     this.screenWidth=window.innerWidth;
   }
+
 
   getOrderDetails()
   {

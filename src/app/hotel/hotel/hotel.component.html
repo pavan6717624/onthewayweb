@@ -16,32 +16,47 @@
     <div nz-row>
         <div nz-col nzSpan="2" style='text-align: left'>&nbsp;</div>
 
-        <div nz-col nzSpan="22" style='text-align: left'>
-            <h3>{{hotel.name}}</h3>
+
+        <ng-container *ngIf="loginStatus.userType==='Restaurant'">
+
+            <div nz-col nzSpan="22" style='text-align: left'>
+                <h3>{{hotel.name}}</h3>
 
 
-            <div nz-row>
-                <div nz-col nzSpan="12" style='text-align: left'>
-                    <ng-container *ngIf="hotel.onlineStatus">
-                        <b><span style='color:green'>You are Online</span></b>
-                    </ng-container>
+                <div nz-row>
+                    <div nz-col nzSpan="12" style='text-align: left'>
+                        <ng-container *ngIf="hotel.onlineStatus">
+                            <b><span style='color:green'>You are Online</span></b>
+                        </ng-container>
 
-                    <ng-container *ngIf="!hotel.onlineStatus">
-                        <b><span style='color:red'>You are Offline</span></b>
-                    </ng-container>
+                        <ng-container *ngIf="!hotel.onlineStatus">
+                            <b><span style='color:red'>You are Offline</span></b>
+                        </ng-container>
+                    </div>
+                    <div nz-col nzSpan="12" style='text-align: left'>
+                        <nz-switch [nzLoading]='statusChanging' [(ngModel)]="hotel.onlineStatus"
+                            (ngModelChange)="statusChange()" [nzCheckedChildren]="checkedTemplate"
+                            [nzUnCheckedChildren]="unCheckedTemplate">
+                        </nz-switch>
+                        <ng-template #checkedTemplate><i nz-icon nzType="check"></i></ng-template>
+                        <ng-template #unCheckedTemplate><i nz-icon nzType="close"></i></ng-template>
+                    </div>
                 </div>
-                <div nz-col nzSpan="12" style='text-align: left'>
-                    <nz-switch [nzLoading]='statusChanging' [(ngModel)]="hotel.onlineStatus"
-                        (ngModelChange)="statusChange()" [nzCheckedChildren]="checkedTemplate"
-                        [nzUnCheckedChildren]="unCheckedTemplate">
-                    </nz-switch>
-                    <ng-template #checkedTemplate><i nz-icon nzType="check"></i></ng-template>
-                    <ng-template #unCheckedTemplate><i nz-icon nzType="close"></i></ng-template>
-                </div>
+
+
             </div>
+        </ng-container>
 
 
-        </div>
+        <ng-container *ngIf="loginStatus.userType==='Admin'">
+
+            <div nz-col nzSpan="22" style='text-align: left'>
+                <h3> Welcome Admin! </h3>
+
+                </div>
+
+        </ng-container>
+
     </div>
     <div nz-row>&nbsp;</div>
     <div nz-row>
@@ -782,7 +797,8 @@
                     </div>
                     <div nz-col nzSpan="12" style='text-align: center; padding:5px;'>
 
-                        <button nz-button nzType="primary" nzShape="round" (click)="submitOrder('Accepted')"> Accept Order
+                        <button nz-button nzType="primary" nzShape="round" (click)="submitOrder('Accepted')"> Accept
+                            Order
                         </button>
 
                     </div>
@@ -791,9 +807,9 @@
                 <ng-container *ngIf="selectedOrder.orderStatus==='Cancelled'">
 
                     <div nz-col nzSpan="24" style='text-align: left; padding:5px;'>
-                    <h3> Reason for Rejection</h3> 
+                        <h3> Reason for Rejection</h3>
 
-                    <div style='text-align:left'> {{selectedOrder.message}} </div>
+                        <div style='text-align:left'> {{selectedOrder.message}} </div>
 
                     </div>
 
@@ -803,46 +819,45 @@
                 <ng-container *ngIf="selectedOrder.orderStatus==='Accepted'">
                     <div nz-col nzSpan="24" style='text-align: center; padding:5px;'>
 
-                        <button nz-button nzType="primary" style='width:100%' nzShape="round" (click)="submitOrder('Progress')"> In Progress
+                        <button nz-button nzType="primary" style='width:100%' nzShape="round"
+                            (click)="submitOrder('Progress')"> In Progress
                         </button>
 
                     </div>
                 </ng-container>
-    
+
                 <ng-container *ngIf="selectedOrder.orderStatus==='Progress'">
                     <div nz-col nzSpan="24" style='text-align: center; padding:5px;'>
 
-                        <button nz-button nzType="primary" style='width:100%' nzShape="round" (click)="submitOrder('Ready')"> Order Ready
+                        <button nz-button nzType="primary" style='width:100%' nzShape="round"
+                            (click)="submitOrder('Ready')"> Order Ready
                         </button>
 
                     </div>
                 </ng-container>
-    
-    
+
+
                 <ng-container *ngIf="selectedOrder.orderStatus==='Ready'">
                     <div nz-col nzSpan="24" style='text-align: center; padding:5px;'>
 
-                        <button nz-button nzType="primary" style='width:100%' nzShape="round" (click)="submitOrder('Completed')"> Order Completed
+                        <button nz-button nzType="primary" style='width:100%' nzShape="round"
+                            (click)="submitOrder('Completed')"> Order Completed
                         </button>
 
                     </div>
                 </ng-container>
-    
-    
+
+
                 <ng-container *ngIf="selectedOrder.orderStatus==='Completed'">
                     <div nz-col nzSpan="24" style='text-align: center; padding:0px;'>
 
-                        <nz-result
-                        nzStatus="success"
-                        nzTitle="Order Completed"
-                        nzSubTitle=""
-                      >
-                      </nz-result>
+                        <nz-result nzStatus="success" nzTitle="Order Completed" nzSubTitle="">
+                        </nz-result>
 
                     </div>
                 </ng-container>
-    
-    
+
+
 
 
             </div>

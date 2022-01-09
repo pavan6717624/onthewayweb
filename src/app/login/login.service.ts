@@ -6,6 +6,9 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class LoginService {
+  getLoginDetails() {
+    return this.http.get('http://localhost:8086/getLoginDetails')
+  }
   login(formData: FormData): Observable<any>
   {
 

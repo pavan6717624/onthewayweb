@@ -4,6 +4,8 @@ import { sum } from 'ng-zorro-antd/core/util';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { CustomerService } from '../customer.service';
+import { LoginStatus } from 'src/app/login/login/login.component';
+import { LoginService } from 'src/app/login/login.service';
 
 export class City
 {
@@ -52,16 +54,64 @@ count: number = 0;
 })
 export class CustomerComponent implements OnInit {
 
-  constructor(private notification: NzNotificationService, private router: Router, private customerService: CustomerService, private msg: NzMessageService) { }
+  loginStatus: LoginStatus = new LoginStatus();
+
+  constructor(private notification: NzNotificationService, private loginService: LoginService, private router: Router, private customerService: CustomerService, private msg: NzMessageService) { 
+
+    const navigation = this.router.getCurrentNavigation();
+    this.loginStatus = (navigation?.extras?.state?.loginStatus);
+    
+
+    if (this.loginStatus && this.loginStatus.userType==='Customer') {
+      
+      this.startLoading();
+    }
+    else {
+      this.getLoginDetails();
+
+    }
+
+
+  }
 
   screenWidth:number=0;
 
 
   ngOnInit(): void {
+    
+  
+  }
+
+  startLoading()
+  {
     this.check();
     this.getCities();
     this.screenWidth = window.innerWidth;
-  
+  }
+
+  getLoginDetails() {
+    this.loading1 = true;
+    this.loginService.getLoginDetails().subscribe(
+      (res: any) => {
+        this.loading1 = false;
+        this.loginStatus = res;
+
+
+        if (this.loginStatus && (this.loginStatus.userType==='Customer')) {
+    
+        this.startLoading();
+        }
+        else
+        {
+        this.loading1 = false; this.msg.create('error', 'Logging to Corresponding Role...');
+        this.router.navigate(['login']);
+        }
+      },
+      (err : any) => {
+        this.loading1 = false; this.msg.create('error', 'Session Expired. Please Login...');
+        this.router.navigate(['login']);
+      }
+    );
   }
 
 
