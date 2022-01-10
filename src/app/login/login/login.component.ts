@@ -40,6 +40,20 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.getLoginDetails();
 
+    if(!navigator.geolocation)
+    {
+      console.log("this is not supported");
+    }
+
+    else
+    {
+      navigator.geolocation.getCurrentPosition((position) => 
+      {
+
+          console.log(position.coords.latitude+" "+position.coords.longitude);
+
+      });
+    }
 
     // this.login();
    }
